@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+
+class Program
+{
+    // Hàm tĩnh để đọc file CSV vào mảng 2 chiều
+    public static double[,] ReadCsvTo2DArray(string fileName, bool hasHeader)
+    {
+        try
+        {
+            var lines = new List<string[]>();
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                if (hasHeader)
+                {
+                    reader.ReadLine(); // Bỏ qua dòng header nếu có
+                }
+
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var values = line.Split(',');
+                    lines.Add(values);
+                }
+            }
+
+            int rows = lines.Count;
+            int columns = lines[0].Length;
+            double[,] array = new double[rows, columns];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    array[i, j] = double.Parse(lines[i][j], CultureInfo.InvariantCulture);
+                }
+            }
+
+            return array;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+            return null;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string fileName = "data.csv";
+        bool hasHeader = true; // Đặt giá trị này thành false nếu file không có header
+
+        double[,] result = ReadCsvTo2DArray(fileName, hasHeader);
+
+        if (result != null)
+        {
+            int rows = result.GetLength(0);
+            int columns = result.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    Console.Write(result[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
