@@ -1,0 +1,76 @@
+Cach1:
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
+class Program
+{
+    // Hàm tĩnh để đọc file JSON và trả về Dictionary<string, object>
+    public static Dictionary<string, object> ReadJsonFileToDictionaryNewtonsoft(string fileName)
+    {
+        try
+        {
+            string jsonContent = File.ReadAllText(fileName);
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonContent);
+            return dictionary;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+            return null;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string fileName = "path_to_your_json_file.json";
+        var result = ReadJsonFileToDictionaryNewtonsoft(fileName);
+        
+        if (result != null)
+        {
+            foreach (var kvp in result)
+            {
+                Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
+        }
+    }
+}
+Cach 2:
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+
+class Program
+{
+    // Hàm tĩnh để đọc file JSON và trả về Dictionary<string, object>
+    public static Dictionary<string, object> ReadJsonFileToDictionarySystemTextJson(string fileName)
+    {
+        try
+        {
+            string jsonContent = File.ReadAllText(fileName);
+            var dictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonContent);
+            return dictionary;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+            return null;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string fileName = "path_to_your_json_file.json";
+        var result = ReadJsonFileToDictionarySystemTextJson(fileName);
+        
+        if (result != null)
+        {
+            foreach (var kvp in result)
+            {
+                Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
+        }
+    }
+}
