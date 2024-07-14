@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+class Program
+{
+    // Hàm tĩnh để ghi Dictionary ra file CSV
+    public static void WriteDictionaryToCsv(string fileName, Dictionary<string, double> dictionary)
+    {
+        try
+        {
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                // Viết header
+                writer.WriteLine("Key,Value");
+
+                // Viết các dòng dữ liệu
+                foreach (var kvp in dictionary)
+                {
+                    writer.WriteLine($"{kvp.Key},{kvp.Value}");
+                }
+            }
+            Console.WriteLine("Ghi file CSV thành công.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string fileName = "output.csv";
+        var dictionary = new Dictionary<string, double>
+        {
+            { "dien_tich", 78.5 },
+            { "chu_vi", 31.4 },
+            { "duong_kinh", 10.0 }
+        };
+
+        WriteDictionaryToCsv(fileName, dictionary);
+    }
+}
