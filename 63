@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
+class Program
+{
+    // Hàm tĩnh để ghi Dictionary ra file JSON, trả về bool
+    public static bool WriteDictionaryToJsonFileNewtonsoft(string fileName, Dictionary<string, object> dictionary)
+    {
+        try
+        {
+            string jsonContent = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
+            File.WriteAllText(fileName, jsonContent);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+            return false;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string fileName = "output_newtonsoft.json";
+        var dictionary = new Dictionary<string, object>
+        {
+            { "dien_tich", 78.5 },
+            { "chu_vi", 31.4 },
+            { "duong_kinh", 10 }
+        };
+        
+        bool result = WriteDictionaryToJsonFileNewtonsoft(fileName, dictionary);
+        Console.WriteLine("Ghi file với Newtonsoft.Json " + (result ? "thành công" : "thất bại"));
+    }
+}
+
+Cach 2:
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+
+class Program
+{
+    // Hàm tĩnh để ghi Dictionary ra file JSON, trả về bool
+    public static bool WriteDictionaryToJsonFileSystemTextJson(string fileName, Dictionary<string, object> dictionary)
+    {
+        try
+        {
+            string jsonContent = JsonSerializer.Serialize(dictionary, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(fileName, jsonContent);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Đã xảy ra lỗi: " + ex.Message);
+            return false;
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        string fileName = "output_systemtext.json";
+        var dictionary = new Dictionary<string, object>
+        {
+            { "dien_tich", 78.5 },
+            { "chu_vi", 31.4 },
+            { "duong_kinh", 10 }
+        };
+        
+        bool result = WriteDictionaryToJsonFileSystemTextJson(fileName, dictionary);
+        Console.WriteLine("Ghi file với System.Text.Json " + (result ? "thành công" : "thất bại"));
+    }
+}
